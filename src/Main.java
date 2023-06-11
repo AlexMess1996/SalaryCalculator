@@ -9,6 +9,15 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         //variables
 
+        //User input variables UI
+        double UI_amountOrdersWeekday = 0;
+        double UI_amountOrdersSaturday = 0;
+        double UI_amountOrdersSunday = 0;
+        double UI_seniority = 0;
+        double UI_kmPerOrder = 0;
+        double UI_tipsPerOrder = 0;
+        double UI_yearsOfService = 0;
+
         //constant variables
         double baseHourlySalary = 134.39;
         double priceOrderWeekday = 17.25;
@@ -23,12 +32,14 @@ public class Main {
         double amountOrdersWeekday = 0;
         double amountOrdersSaturday = 0;
         double amountOrdersSunday = 0;
-        double sumTips = 0;
         double seniority = 0;
-        double priceKmPerOrder = 0;
         double kmPerOrder = 0;
         double tipsPerOrder = 0;
         double yearsOfService = 0;
+
+        //sum variables
+        double sumTips = 0;
+        double priceKmPerOrder = 0;
 
         //calculations
         priceOrderWeekday *=amountOrdersWeekday;
