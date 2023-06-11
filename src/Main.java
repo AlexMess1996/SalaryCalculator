@@ -17,6 +17,16 @@ public class Main {
         double UI_kmPerOrder = 0;
         double UI_tipsPerOrder = 0;
         double UI_yearsOfService = 0;
+        int menu_1 = 0;
+
+        //if the user decides to register data
+        char registerMenu = ' '; // Y or N (y or n)
+        int chooseRegister = 0; // 1 or 2. 1 to register new shift or 2 to go back to the main menu.
+
+        //if the user decides to read data from the .txt file
+        int type = 0; //1: daily , 2: weekly, 3: monthly
+        int chooseSum = 0; // 1 or 2. 1 to go back into choosing the timeframe or 2 to go back to the main menu
+
 
         //constant variables
         double baseHourlySalary = 134.39;
@@ -50,10 +60,17 @@ public class Main {
         priceKmPerOrder = pricePerKm * kmPerOrder;
 
         //for weekdays
-        System.out.print("***********************\n" +
+        //title
+        System.out.print(
+                "***********************\n" +
                 "Salary Calculator 2023\n" +
-                "***********************");
+                "***********************\n");
 
+        //main menu
+        System.out.print(
+                "1: Register\n" +
+                        "2: Show sum\n" +
+                        "3: Exit");
 
     }
 }
