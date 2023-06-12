@@ -1,5 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -11,6 +17,7 @@ public class Main {
 
         //Objects
         Scanner sc = new Scanner(System.in);
+        List<Shift> shifts = new ArrayList<>();
         //variables
 
         //User input variables UI
@@ -22,6 +29,8 @@ public class Main {
         double UI_totalTips = 0;
         double UI_workedHours = 0;
         int menu_1 = 0;
+
+
 
         //if the user decides to register data
         char registerMenu = ' '; // Y or N (y or n)
@@ -83,6 +92,14 @@ public class Main {
 
         switch (menu_1) {
             case 1 -> {
+
+                String storeDate;
+                String storeTypeofWeek;
+                double storeWorkedHours;
+                double storeKm;
+                double storeTips;
+                double storeSeniority;
+
                 System.out.println("***********************\n" +
                         "Shift Register\n" +
                         "***********************\n");
@@ -91,16 +108,29 @@ public class Main {
                         "Your input: ");
                 String date = "";
                 date = sc.next();
+                storeDate = date;
+
                 System.out.print("\nChoose the following about your shift:(1,2 or 3) \n" +
                         "1: Weekday\n" +
                         "2: Saturday\n" +
                         "3: Sunday\n" +
                         "Your input: ");
                 int typeOfWeek = sc.nextInt();
+                String typeofWeek = "";
+                if(typeOfWeek == 1){
+                     typeofWeek = "Weekday";
+
+                }else if (typeOfWeek == 2){
+                     typeofWeek = "Saturday";
+                }else if (typeOfWeek == 3){
+                     typeofWeek = "Sunday";
+                }
+                storeTypeofWeek = typeofWeek;
 
                 System.out.print("\nAmount of hours worked: " +
                         "\nYour input: ");
                         UI_workedHours = sc.nextDouble();
+                        storeWorkedHours = UI_workedHours;
                 System.out.println("\nDid you have a moment where you didn't have any orders? (Y/N): ");
                 String guaranteeChoice = "";
                 guaranteeChoice = sc.next();
@@ -108,26 +138,26 @@ public class Main {
                 System.out.print("\nKm in total:\n" +
                         "Your Input: ");
                 UI_totalKm = sc.nextDouble();
+                storeKm = UI_totalKm;
 
                 System.out.print("\nTips: ");
                 UI_totalTips = sc.nextInt();
-
+                storeTips = UI_totalTips;
                 System.out.print("\nYears worked in the company: ");
                 UI_seniority = sc.nextInt();
+                storeSeniority = UI_seniority;
+
+                shifts.add(new Shift(storeDate,storeTypeofWeek,storeWorkedHours,storeKm,
+                        storeTips,storeSeniority));
+
                  clearConsole();
-                System.out.print("Loading");
-                Thread.sleep(1000);
-                System.out.print(".");
-                Thread.sleep(1000);
-                System.out.print(".");
-                Thread.sleep(1000);
-                System.out.print(".");
+                loadingScreen();
                 Thread.sleep(1400);
                 clearConsole();
 
                 System.out.print("**********************************************\n" +
-                        "Date: "+date+"" +
-                        "\nType of the week: "+typeOfWeek+"\n" +
+                        "Date: "+date+"\n" +
+                         "\nType of the week: "+typeOfWeek+"\n" +
                         "\nHours worked: "+UI_workedHours+"\n" +
                         "\nDid you have a moment where you didn't work?: "+guaranteeChoice+"\n" +
                         "\nKm in total: "+UI_totalKm+"\n" +
@@ -139,20 +169,34 @@ public class Main {
                         "\nYour input: ");
                 String choose = sc.next();
 
-                if(choose == "N" || choose =="n"){
+                if(Objects.equals(choose, "N") || Objects.equals(choose, "n")){
                     exit(0);
+                }else if(Objects.equals(choose, "Y") || Objects.equals(choose, "y")){
+                    saveShiftsDataToFile(shifts);
                 }
 
-
-
-
-
+            }
+            case 2 ->{
+                System.out.print("***********************\n" +
+                        "Historic of shifts\n" +
+                        "***********************");
             }
         }
 
-
-
     }
+
+    private static void saveShiftsDataToFile(List<Shift> shifts) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("shifts.txt",true))){
+            for(Shift shift : shifts){
+                writer.write(shift.toString());
+                writer.newLine();
+                System.out.println("The shift has been registered!");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+        }
+    }
+
     public static void clearConsole() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -163,4 +207,37 @@ public class Main {
             }
         } catch (IOException | InterruptedException ex) {}
     }
+
+    public static void loadingScreen() throws InterruptedException {
+        System.out.print("Loading");
+        Thread.sleep(1000);
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.print(".");
+    }
+    private static class Shift{
+        private String date;
+        private String typeOfWeek;
+        private double workedHours;
+        private double km;
+        private double tips;
+        private double seniority;
+
+        public Shift(String date,String typeOfWeek,double workedHours,double km, double tips,
+        double seniority){
+            this.date = date;
+            this.typeOfWeek = typeOfWeek;
+            this.workedHours = workedHours;
+            this.km = km;
+            this.tips = tips;
+            this.seniority = seniority;
+        }
+
+        @Override
+        public String toString() {return date + ","+typeOfWeek+","+workedHours+","+km+","+
+        tips+","+seniority;}
+    }
 }
+
