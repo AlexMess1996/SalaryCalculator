@@ -1,5 +1,9 @@
 @echo off
 
+title Salary Calculator
+mode con: cols=80 lines=20
+color 0A
+
 rem Get the current directory
 set "currentDir=%~dp0"
 
@@ -8,7 +12,7 @@ set "javaFile=./Main.java"
 for %%F in ("%javaFile%") do (
     set "name=%%~nF"
 )
-
+echo Loading the program please wait...
 rem Compile the Java file
 javac "%currentDir%%javaFile%"
 
@@ -19,7 +23,6 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-echo Compilation successful.
 
 rem Run the compiled Java program
 java "Main.java"
