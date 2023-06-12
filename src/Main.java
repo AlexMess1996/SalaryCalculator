@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,7 @@ public class Main {
         double UI_amountOrdersWeekday = 0;
         double UI_amountOrdersSaturday = 0;
         double UI_amountOrdersSunday = 0;
-        int UI_seniority = 0;
+        double UI_seniority = 0;
         double UI_totalKm = 0;
         double UI_totalTips = 0;
         double UI_workedHours = 0;
@@ -144,7 +141,7 @@ public class Main {
                 UI_totalTips = sc.nextInt();
                 storeTips = UI_totalTips;
                 System.out.print("\nYears worked in the company: ");
-                UI_seniority = sc.nextInt();
+                UI_seniority = sc.nextDouble();
                 storeSeniority = UI_seniority;
 
                 shifts.add(new Shift(storeDate,storeTypeofWeek,storeWorkedHours,storeKm,
@@ -157,7 +154,7 @@ public class Main {
 
                 System.out.print("**********************************************\n" +
                         "Date: "+date+"\n" +
-                         "\nType of the week: "+typeOfWeek+"\n" +
+                         "\nType of the week: "+typeofWeek+"\n" +
                         "\nHours worked: "+UI_workedHours+"\n" +
                         "\nDid you have a moment where you didn't work?: "+guaranteeChoice+"\n" +
                         "\nKm in total: "+UI_totalKm+"\n" +
@@ -180,9 +177,39 @@ public class Main {
                 System.out.print("***********************\n" +
                         "Historic of shifts\n" +
                         "***********************");
+
+                displayShiftsDataFromFile();
             }
         }
 
+    }
+
+    private static void displayShiftsDataFromFile() {
+        try(BufferedReader reader = new BufferedReader(new FileReader("shifts.txt"))){
+            System.out.println("\nShifts datatable");
+            System.out.println("--------------------------------------------------------------------------------------------------");
+            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |%n", "Date", "Type", "Hours", "Km","Tips","Seniority");
+            System.out.println("--------------------------------------------------------------------------------------------------");
+
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] data = line.split(",");
+                if(data.length == 6){
+                    String date = data[0].trim();
+                    String type = data[1].trim();
+                    double hours = Double.parseDouble(data[2].trim());
+                    double km = Double.parseDouble(data[3].trim());
+                    double tips= Double.parseDouble(data[4].trim());
+                    double seniority= Double.parseDouble(data[5].trim());
+
+                    System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |%n", date, type, hours, km,tips,seniority);
+
+                }
+            }
+            System.out.println("--------------------------------------------------------------------------------------------------");
+        } catch (IOException e){
+            System.out.println("An error occurred while reading the file.");
+        }
     }
 
     private static void saveShiftsDataToFile(List<Shift> shifts) {
