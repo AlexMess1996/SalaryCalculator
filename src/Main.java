@@ -25,9 +25,6 @@ public class Main {
         double UI_totalKm = 0;
         double UI_totalTips = 0;
         double UI_workedHours = 0;
-        int menu_1 = 0;
-
-
 
         //if the user decides to register data
         char registerMenu = ' '; // Y or N (y or n)
@@ -72,25 +69,10 @@ public class Main {
         //for weekdays
         //title
         clearConsole();
-        System.out.print(
-                "***********************\n" +
-                "Salary Calculator 2023\n" +
-                "***********************\n");
-                Thread.sleep(1200);
-        //main menu
-        System.out.print(
-                        "1: Register\n" +
-                        "2: Show sum\n" +
-                        "3: Exit\n\n" +
-                        "Your input: ");
 
-        menu_1 = sc.nextInt();
-        clearConsole();
-
-
-        switch (menu_1) {
+        switch (mainMenu()) {
             case 1 -> {
-
+                clearConsole();
                 String storeDate;
                 String storeTypeofWeek;
                 double storeWorkedHours;
@@ -107,7 +89,6 @@ public class Main {
                 String date = "";
                 date = sc.next();
                 storeDate = date;
-
                 System.out.print("\nChoose the following about your shift:(1,2 or 3) \n" +
                         "1: Weekday\n" +
                         "2: Saturday\n" +
@@ -175,6 +156,7 @@ public class Main {
 
             }
             case 2 ->{
+                clearConsole();
                 System.out.print("***********************\n" +
                         "Historic of shifts\n" +
                         "***********************");
@@ -246,10 +228,22 @@ public class Main {
         System.out.print(".");
     }
 
-    public static int mainMenu(int menu_1){
-
-
-        return 0;
+    public static int mainMenu() throws InterruptedException {
+        Scanner sc = new Scanner(System.in);
+        int result = 0;
+        System.out.print(
+                        "***********************\n"+
+                        "Salary Calculator 2023\n" +
+                        "***********************\n");
+        Thread.sleep(1200);
+        //main menu
+        System.out.print(
+                        "1: Register\n"+
+                        "2: Show sum\n"+
+                        "3: Exit\n\n"  +
+                        "Your input: ");
+        result = sc.nextInt();
+        return result;
     }
     private static class Shift{
         private String date;
