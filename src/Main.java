@@ -79,13 +79,14 @@ public class Main {
                 Thread.sleep(1200);
         //main menu
         System.out.print(
-                "1: Register\n" +
+                        "1: Register\n" +
                         "2: Show sum\n" +
                         "3: Exit\n\n" +
                         "Your input: ");
+
         menu_1 = sc.nextInt();
         clearConsole();
-        //System.out.println(menu_1);
+
 
         switch (menu_1) {
             case 1 -> {
@@ -243,6 +244,12 @@ public class Main {
         System.out.print(".");
         Thread.sleep(1000);
         System.out.print(".");
+    }
+
+    public static int mainMenu(int menu_1){
+
+
+        return 0;
     }
     private static class Shift{
         private String date;
