@@ -150,38 +150,56 @@ public class Main {
 
 
     private static void displayShiftsDataFromFile() {
-        try(BufferedReader reader = new BufferedReader(new FileReader("shifts.txt"))){
+        try (BufferedReader reader = new BufferedReader(new FileReader("shifts.txt"))) {
             Scanner sc = new Scanner(System.in);
             Thread.sleep(1000);
-            System.out.println("\nShifts datatable");
+            System.out.print("\nType the month (1-12): ");
+            int wantedMonth = sc.nextInt();
+
+            String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
+
+            clearConsole();
+            System.out.println("Shifts from " + monthNames[wantedMonth]);
+
             System.out.println("--------------------------------------------------------------------------------------------------");
-            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |%n", "Date", "Type", "Hours", "Km","Tips","Seniority");
+            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |\n", "Date", "Type", "Hours", "Km", "Tips", "Seniority");
             System.out.println("--------------------------------------------------------------------------------------------------");
+
             String line;
             boolean choice = false;
 
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-                if(data.length == 6){
+
+                if (data.length == 6) {
                     String date = data[0].trim();
                     String type = data[1].trim();
                     double hours = Double.parseDouble(data[2].trim());
                     double km = Double.parseDouble(data[3].trim());
-                    double tips= Double.parseDouble(data[4].trim());
-                    double seniority= Double.parseDouble(data[5].trim());
+                    double tips = Double.parseDouble(data[4].trim());
+                    double seniority = Double.parseDouble(data[5].trim());
 
-                    System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |%n", date, type, hours, km,tips,seniority);
+                    String[] currDate = date.split("\\.");
 
+                    String day = currDate[0].trim();
+                    String month = currDate[1].trim();
+                    String year = currDate[2].trim();
+
+                    if (Integer.parseInt(month) == wantedMonth) {
+                        System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |\n", date, type, hours, km, tips, seniority);
+                    }
                 }
             }
+
             System.out.println("--------------------------------------------------------------------------------------------------");
             Thread.sleep(1000);
             waitForEnter();
             choice = true;
-            if(choice){
+            if (choice) {
                 clearConsole();
             }
-        } catch (IOException | InterruptedException e){
+        } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred while reading the file.");
         }
     }
