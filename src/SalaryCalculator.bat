@@ -1,7 +1,7 @@
 @echo off
 
 title Salary Calculator
-mode con: cols=100 lines=20
+mode con: cols=180 lines=20
 color 0A
 
 rem Get the current directory
