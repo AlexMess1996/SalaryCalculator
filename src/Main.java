@@ -64,15 +64,15 @@ public class Main {
          double totalKmPricePerOrder = pricePerKm * km;
          double totalSeniorityPrice = seniority * seniorityPrice;
 
-         if(typeOfDay == "Weekday"){
+         if(typeOfDay.equals("Weekday")){
               perOrderPay = 17.25;
-         } else if(typeOfDay == "Saturday"){
+         } else if(typeOfDay.equals("Saturday")){
              perOrderPay = 22.51;
-         } else if (typeOfDay == "Sunday"){
+         } else if (typeOfDay.equals("Sunday")){
              perOrderPay = 27.77;
          }
 
-        totalHourlyPay = (hourlyRate * workedHours) + totalKmPricePerOrder + (totalSeniorityPrice * workedHours) + (amountOrders * perOrderPay);
+        totalHourlyPay = (hourlyRate * workedHours) + totalKmPricePerOrder + (totalSeniorityPrice * workedHours) + (amountOrders * perOrderPay) +tips;
 
         return totalHourlyPay;
     }
