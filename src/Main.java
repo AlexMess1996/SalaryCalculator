@@ -206,9 +206,9 @@ public class Main {
             clearConsole();
             System.out.println("Shifts from " + monthNames[wantedMonth]);
 
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
-            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s | %-8s |\n", "Date", "Type", "Hours", "Km","Orders", "Tips", "Seniority","Total");
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s | %-10s | %-8s |\n", "Date", "Type", "Hours", "Km","Orders", "Tips", "Seniority","Total","AVG per hour");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             String line;
             boolean choice = false;
@@ -232,14 +232,23 @@ public class Main {
                     String year = currDate[2].trim();
 
                     double totalHourlySum = hourlySalarySum(type,hours,km,tips,seniority,orders);
+                    double avgPerHour = totalHourlySum / hours;
+
+                    String formattedValue = String.format("%.2f", avgPerHour);
+                    String formattedValue_2 = String.format("%.2f", totalHourlySum);
 
                     if (Integer.parseInt(month) == wantedMonth) {
-                        System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s | %-8s |\n", date, type, hours, km, orders, tips, seniority,totalHourlySum);
+                        System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s  | %-10.2f |  %-8.2f    |\n",
+                                date, type, String.format("%.1f", hours), String.format("%.1f", km), orders, tips, seniority,
+                                totalHourlySum, avgPerHour);
+
+
+
                     }
                 }
             }
 
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
             Thread.sleep(1000);
             waitForEnter();
             choice = true;
