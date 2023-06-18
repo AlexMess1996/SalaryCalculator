@@ -154,10 +154,16 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             Thread.sleep(1000);
             System.out.print("\nType the month (1-12): ");
-            int wantedMonth = sc.nextInt();
-
             String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"};
+
+            for(int i = 1; i < monthNames.length; i++){
+                System.out.print("\n"+i+": "+monthNames[i]);
+            }
+            System.out.print("\n");
+            System.out.print("\n");
+            System.out.print("Your input: ");
+            int wantedMonth = sc.nextInt();
 
             clearConsole();
             System.out.println("Shifts from " + monthNames[wantedMonth]);
