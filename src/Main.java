@@ -47,14 +47,47 @@ public class Main {
         displayShiftsDataFromFile();
     }
 
+    public static double hourlySalarySum(String typeOfDay,double workedHours, double km, int tips, int seniority, int amountOrders){
+
+        double pricePerKm = 2.268;
+        double seniorityPrice = 1;
+        double hourlyRate = 134.39;
+        double perOrderPay = 0;
+        double guaranteedPay_Weekday = 152.28;
+        double guaranteedPay_Saturday = 162.80;
+        double guaranteedPay_Sunday = 173.32;
+        double administrativeWork_Weekdays = 174.84;
+        double administrativeWork_Saturday = 184.10;
+        double administrativeWork_Sunday = 194.60;
+        double totalHourlyPay = 0;
+
+         double totalKmPricePerOrder = pricePerKm * km;
+         double totalSeniorityPrice = seniority * seniorityPrice;
+
+         if(typeOfDay == "Weekday"){
+              perOrderPay = 17.25;
+         } else if(typeOfDay == "Saturday"){
+             perOrderPay = 22.51;
+         } else if (typeOfDay == "Sunday"){
+             perOrderPay = 27.77;
+         }
+
+        totalHourlyPay = (hourlyRate * workedHours) + totalKmPricePerOrder + (totalSeniorityPrice * workedHours) + (amountOrders * perOrderPay);
+
+        return totalHourlyPay;
+    }
+
+    public static double monthlySalarySum(){return 0.0;}
+
     public static void registerMenu() throws InterruptedException {
         //User input variables UI
         double UI_amountOrdersWeekday = 0;
         double UI_amountOrdersSaturday = 0;
         double UI_amountOrdersSunday = 0;
-        double UI_seniority = 0;
+        int UI_amountOfOrders = 0;
+        int UI_seniority = 0;
         double UI_totalKm = 0;
-        double UI_totalTips = 0;
+        int UI_totalTips = 0;
         double UI_workedHours = 0;
 
         List<Shift> shifts = new ArrayList<>();
@@ -64,15 +97,16 @@ public class Main {
         String storeTypeofWeek;
         double storeWorkedHours;
         double storeKm;
-        double storeTips;
-        double storeSeniority;
+        int storeTips;
+        int storeSeniority;
+        int storeOrderQuantity;
 
                 System.out.println("***********************\n" +
                                    "Shift Register\n" +
                                    "***********************\n");
                 Thread.sleep(1500);
-                System.out.print("Today's date (dd.mm.yyyy): " +
-                        "Your input: ");
+                System.out.print("Today's date (dd.mm.yyyy): ");
+
                 String date = "";
                 date = sc.next();
                 storeDate = date;
@@ -106,15 +140,21 @@ public class Main {
                 UI_totalKm = sc.nextDouble();
                 storeKm = UI_totalKm;
 
+        System.out.print("\nHow many orders did you deliver?: \n" +
+                "Your input: ");
+                UI_amountOfOrders = sc.nextInt();
+                storeOrderQuantity = UI_amountOfOrders;
+
+
                 System.out.print("\nTips: ");
                 UI_totalTips = sc.nextInt();
                 storeTips = UI_totalTips;
                 System.out.print("\nYears worked in the company: ");
-                UI_seniority = sc.nextDouble();
+                UI_seniority = sc.nextInt();
                 storeSeniority = UI_seniority;
 
                 shifts.add(new Shift(storeDate,storeTypeofWeek,storeWorkedHours,storeKm,
-                        storeTips,storeSeniority));
+                        storeOrderQuantity,storeTips,storeSeniority));
 
                 clearConsole();
                 loadingScreen();
@@ -127,6 +167,7 @@ public class Main {
                                  "\nHours worked: "+UI_workedHours+"\n" +
                                  "\nDid you have a moment where you didn't work?: "+guaranteeChoice+"\n" +
                                  "\nKm in total: "+UI_totalKm+"\n" +
+                                 "\nAmount of orders: "+UI_amountOfOrders+"\n" +
                                  "\nTips: "+ UI_totalTips+"\n" +
                                  "\nYears worked: "+UI_seniority+"\n" +
                                  "**********************************************\n");
@@ -145,9 +186,6 @@ public class Main {
                 }
                 //clearConsole();
             }
-
-
-
 
     private static void displayShiftsDataFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("shifts.txt"))) {
@@ -168,9 +206,9 @@ public class Main {
             clearConsole();
             System.out.println("Shifts from " + monthNames[wantedMonth]);
 
-            System.out.println("--------------------------------------------------------------------------------------------------");
-            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |\n", "Date", "Type", "Hours", "Km", "Tips", "Seniority");
-            System.out.println("--------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s | %-8s |\n", "Date", "Type", "Hours", "Km","Orders", "Tips", "Seniority","Total");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
 
             String line;
             boolean choice = false;
@@ -178,13 +216,14 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
 
-                if (data.length == 6) {
+                if (data.length == 7) {
                     String date = data[0].trim();
                     String type = data[1].trim();
                     double hours = Double.parseDouble(data[2].trim());
                     double km = Double.parseDouble(data[3].trim());
-                    double tips = Double.parseDouble(data[4].trim());
-                    double seniority = Double.parseDouble(data[5].trim());
+                    int orders = Integer.parseInt(data[4].trim());
+                    int tips = Integer.parseInt(data[5].trim());
+                    int seniority = Integer.parseInt(data[6].trim());
 
                     String[] currDate = date.split("\\.");
 
@@ -192,13 +231,15 @@ public class Main {
                     String month = currDate[1].trim();
                     String year = currDate[2].trim();
 
+                    double totalHourlySum = hourlySalarySum(type,hours,km,tips,seniority,orders);
+
                     if (Integer.parseInt(month) == wantedMonth) {
-                        System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s |\n", date, type, hours, km, tips, seniority);
+                        System.out.printf("| %-20s | %-20s | %-8s | %-8s | %-8s | %-8s | %-8s | %-8s |\n", date, type, hours, km, orders, tips, seniority,totalHourlySum);
                     }
                 }
             }
 
-            System.out.println("--------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
             Thread.sleep(1000);
             waitForEnter();
             choice = true;
@@ -272,22 +313,26 @@ public class Main {
         private String typeOfWeek;
         private double workedHours;
         private double km;
-        private double tips;
-        private double seniority;
+        private int tips;
+        private int seniority;
+        private int orders;
 
-        public Shift(String date,String typeOfWeek,double workedHours,double km, double tips,
-        double seniority){
+        public Shift(String date,String typeOfWeek,double workedHours,double km, int orders, int tips,
+        int seniority){
             this.date = date;
             this.typeOfWeek = typeOfWeek;
             this.workedHours = workedHours;
             this.km = km;
             this.tips = tips;
             this.seniority = seniority;
+            this.orders = orders;
         }
 
+
         @Override
-        public String toString() {return date + ","+typeOfWeek+","+workedHours+","+km+","+
-        tips+","+seniority;}
+        public String toString() {
+            return date + "," + typeOfWeek + "," + workedHours + "," + km + "," + orders + "," + tips + "," + seniority;
+        }
     }
 }
 
